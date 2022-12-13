@@ -1,24 +1,26 @@
 var express = require("express");
-var cookies = require("cookie-parser");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
 
 var app = express();
 
 // Middlewares
-app.use(cookies());
+app.use(cookieParser());
+
+app.use(logger("dev"));
 
 app.use("/about", (req, res, next) => {
-  var count = req.cookies.count;
-  if (count) {
-    res.cookie("username", +count + 1);
-  } else {
-    res.cookie("username", 1);
-  }
+  res.cookie("username", "knandwani98");
+  console.log(req.cookies);
+  res.end("About Page");
+});
+
+app.use((req, res, next) => {
+  console.log(req.cookies);
   next();
 });
 
 // Handling routes
-
-// app.get("/about", (req, res) => {});
 
 app.get("/", (req, res) => {
   res.send("Welcome to Node JS");
